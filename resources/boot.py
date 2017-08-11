@@ -1,4 +1,17 @@
 #!/usr/bin/python
+
+"""
+This script sets:
+  DHCP nameserver
+  FQDN
+  facts from the metadata server
+  generates a puppet config from metadata facts
+  runs puppet to pull down catalogs
+
+The script is run as startup script on boot and allows us to keep the templates self contained.
+https://cloud.google.com/deployment-manager/docs/step-by-step-guide/setting-metadata-and-startup-scripts
+"""
+
 import json
 import logging
 import socket
@@ -50,8 +63,11 @@ def get(url):
         raise
 
 @memoized
-def metadata(key):
-  return get('%s/%s/%s' % (METADATA_ROOT, 'attributes/', key))
+def custom_metadata(key):
+  query = '%s/%s/%s' % (METADATA_ROOT, 'attributes/', key)
+  metadata = get(query)
+  if not metadata:
+    LOG.error("Could not find {}".format(query))
 
 
 @memoized
@@ -59,12 +75,20 @@ def private_ip():
   return get('%s/%s' % (METADATA_ROOT, 'network-interfaces/0/ip'))
 
 
+def tw_region():
+  return custom_metadata('tw_region')
+
+
+def tw_tld():
+  return custom_metadata('tw_tld')
+
+
 def puppet_role():
-  return metadata('puppet_role') or 'generic'
+  return custom_metadata('puppet_role')
 
 
 def puppet_subrole():
-  return metadata('puppet_subrole') or 'general'
+  return custom_metadata('puppet_subrole')
 
 
 def main():
@@ -76,20 +100,21 @@ def main():
 
 
 def _set_nameserver():
-  nameserver = metadata('dhcp_nameserver') or '10.249.64.2'
+  nameserver = custom_metadata('dhcp_nameserver') or '10.249.64.2'
   with open('/etc/resolv.conf', 'w') as f:
     f.write('nameserver %s' % nameserver)
 
 
 def _set_fqdn():
   ip_addr = private_ip()
+  # TODO update to getnameinfo later?
   host_info = socket.gethostbyaddr(ip_addr)
   hostname = host_info[0]
   shell(['/bin/hostname', '-b', hostname])
 
 
 def _write_facts():
-  extra_facts = metadata('puppet_extra_facts')
+  extra_facts = custom_metadata('puppet_extra_facts')
   if extra_facts:
     extra_facts = json.loads(extra_facts)
 
@@ -115,8 +140,8 @@ def _write_puppet_config():
   hostname = socket.getfqdn()
   puppet_config = PUPPET_TEMPLATE.format(
     certname='%s.%s.%s' % (puppet_role(), puppet_subrole(), hostname),
-    server='puppet.guc1.pcs.io',
-    environment=metadata('puppet_environment') or 'production'
+    server='puppet.%s.%s' % (tw_region(), tw_tld()),
+    environment=custom_metadata('puppet_environment')
   )
   with open('/etc/puppetlabs/puppet/puppet.conf', 'w') as f:
     f.write(puppet_config)
