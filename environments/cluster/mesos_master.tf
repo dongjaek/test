@@ -1,5 +1,6 @@
 module "mesos_master" {
-  source = "https://github.com/dongjaek/test/modules/puppet_cluster"
+  # source = "https://github.com/dongjaek/test/modules/puppet_cluster"
+  source = "/Users/davidkim/infrastructure/test/modules/puppet_cluster"
 
   role = "mesos"
   subrole = "master"
@@ -11,7 +12,6 @@ module "mesos_master" {
   region = "${var.region}"
   network = "${var.network}"
   subnet = "${var.subnet}"
-  bootscript_bucket = "${var.buckets["boot_scripts"]}"
   region_dns_suffix = "${google_dns_managed_zone.region_dns.dns_name}"
   region_dns_zone_name = "${google_dns_managed_zone.region_dns.name}"
 }

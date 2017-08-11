@@ -1,11 +1,12 @@
-module "zookeeper_application" {
-  source = "../puppet_cluster"
+module "zookeeper_scheduler" {
+  # source = "../puppet_cluster"
+  source = "/Users/davidkim/infrastructure/test/modules/puppet_cluster"
 
   role = "zookeeper"
-  subrole = "application"
+  subrole = "scheduler"
   image = "${var.images["generic"]}"
-  dns_alias = "application.zk"
-  frontend_lb = "applicationui.zk"
+  dns_alias = "scheduler.zk"
+  frontend_lb = "schedulerui.zk"
   lb_port = "80"
 
   project = "${var.project}"
@@ -13,13 +14,12 @@ module "zookeeper_application" {
   region = "${var.region}"
   network = "${var.network}"
   subnet = "${var.subnet}"
-  bootscript_bucket = "${var.buckets["boot_scripts"]}"
   region_dns_suffix = "${google_dns_managed_zone.region_dns.dns_name}"
   region_dns_zone_name = "${google_dns_managed_zone.region_dns.name}"
 }
 
-resource "google_compute_firewall" "zookeeper_application_allow_self" {
-  name    = "zookeeper-application-allow-self"
+resource "google_compute_firewall" "zookeeper_scheduler_allow_self" {
+  name    = "zookeeper-scheduler-allow-self"
   network = "${var.network}"
 
   allow {
@@ -27,6 +27,6 @@ resource "google_compute_firewall" "zookeeper_application_allow_self" {
     ports    = ["0-65535"]
   }
 
-  source_tags = ["zookeeper-application"]
-  target_tags = ["zookeeper-application"]
+  source_tags = ["zookeeper-scheduler"]
+  target_tags = ["zookeeper-scheduler"]
 }

@@ -1,3 +1,11 @@
+# Variable interpolation is not possible so instead we have to use data
+# and then fix everything together with variables and attribute accesses. AFFFFF
+# usage is as "${data.template_file.boot.template}"
+data "template_file" "boot" {
+  # TODO fix this filepath be root
+  template = "${file("~/infrastructure/test/resources/boot.py")}"
+}
+
 resource "google_compute_instance_template" "template" {
   name_prefix = "pcs-${var.role}-${var.subrole}-"
   tags = ["${var.role}-${var.subrole}"]
@@ -27,7 +35,7 @@ resource "google_compute_instance_template" "template" {
         "puppet_role", "${coalesce("${var.role_override}", "${var.role}")}",
         "puppet_subrole", "${var.subrole}",
         "puppet_environment", "${var.environment}",
-        "startup-script-url", "gs://${var.bootscript_bucket}/boot.py"
+        "startup-script", "${data.template_file.boot.template}"
       ),
       map(
         "${var.dns_alias != "" ? "dns-alias" : "no-dns-alias" }", "${var.role}_${var.subrole}"

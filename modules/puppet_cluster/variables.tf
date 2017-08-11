@@ -14,7 +14,6 @@ variable "disks" {
   default = {}
 }
 
-variable "bootscript_bucket" {}
 variable "region" {}
 variable "zones" { type = "list" }
 variable "image" {}
