@@ -1,3 +1,4 @@
+/*
 # https://www.terraform.io/docs/providers/aws/r/db_instance.html
 
 resource "aws_db_instance" "terraboard" {
@@ -9,3 +10,4 @@ resource "aws_db_instance" "terraboard" {
   username             = "${var.database_username}"
   password             = "${var.database_password}"
 }
+*/

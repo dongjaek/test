@@ -1,5 +1,5 @@
 module "mesos_master" {
-  source = "../puppet_cluster"
+  source = "https://github.com/dongjaek/test/modules/puppet_cluster"
 
   role = "mesos"
   subrole = "master"

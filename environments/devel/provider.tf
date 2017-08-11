@@ -1,1 +1,0 @@
-/Users/davidkim/infrastructure/us-central1-devel/provider.tf

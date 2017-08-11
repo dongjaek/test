@@ -1,0 +1,6 @@
+push to infrastructure github repository
+cleanup terraboard as a setup in AWS with an RDS instance
+setup git paths for source
+create DAG orchestration so puppetmaster comes up first and increase retry limits for scripts
+adjust DNS names as necessary to get them correct
+lookup roles for tag identification of network ACLs.
