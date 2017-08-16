@@ -1,9 +1,15 @@
 # Variable interpolation is not possible so instead we have to use data
-# and then fix everything together with variables and attribute accesses. AFFFFF
+# and then fix everything together with variables and attribute accesses.
 # usage is as "${data.template_file.boot.template}"
-data "template_file" "boot" {
+data "template_file" "puppetmaster_boot" {
   # TODO fix this filepath be root
-  template = "${file("~/infrastructure/test/resources/boot.py")}"
+  template = "${file("~/infrastructure/test/resources/puppetmaster_boot.py")}"
+}
+data "template_file" "puppetmaster_passtiche" {
+  template = "${file("~/infrastructure/test/resources/puppetmaster_passtiche.sh")}"
+}
+data "template_file" "puppetmaster_init" {
+  template = "${file("~/infrastructure/test/resources/puppetmaster_init.sh")}"
 }
 
 resource "google_compute_instance_template" "template" {
@@ -37,7 +43,9 @@ resource "google_compute_instance_template" "template" {
         "puppet_role", "${coalesce("${var.role_override}", "${var.role}")}",
         "puppet_subrole", "${var.subrole}",
         "puppet_environment", "${var.environment}",
-        "startup-script", "${data.template_file.boot.template}"
+        "startup-script", "${data.template_file.puppetmaster_boot.template}",
+        "script-puppetmaster_passtiche", "${data.template_file.puppetmaster_passtiche.template}",
+        "script-puppetmaster_init", "${data.template_file.puppetmaster_init.template}"
       ),
       map(
         "${var.dns_alias != "" ? "dns-alias" : "no-dns-alias" }", "${var.role}_${var.subrole}"

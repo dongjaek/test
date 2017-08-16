@@ -28,7 +28,7 @@ variable "lb_port" {
   default = ""
 }
 variable "dns_alias" {
-  default = "generic"
+  default = "puppetmaster"
 }
 variable "region_dns_suffix" {
   default = ""
@@ -36,10 +36,10 @@ variable "region_dns_suffix" {
 variable "region_dns_zone_name" {
   default = ""
 }
+# TODO not picked up, why not? set manually here, why?
 variable "dc" {
-  default = "pcs.io"
+  default = "guc1"
 }
-
 variable "tld" {
   default = "pcs.io"
 }

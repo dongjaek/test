@@ -28,7 +28,7 @@ variable "lb_port" {
   default = ""
 }
 variable "dns_alias" {
-  default = "generic"
+  default = "puppetdb"
 }
 variable "region_dns_suffix" {
   default = ""
@@ -36,10 +36,5 @@ variable "region_dns_suffix" {
 variable "region_dns_zone_name" {
   default = ""
 }
-variable "dc" {
-  default = "pcs.io"
-}
-
-variable "tld" {
-  default = "pcs.io"
-}
+variable "dc" {}
+variable "tld" {}

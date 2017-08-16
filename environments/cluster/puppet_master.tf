@@ -1,12 +1,9 @@
 module "puppet_master" {
-  # source = "../puppet_cluster"
-  source = "/Users/davidkim/infrastructure/test/modules/puppet_cluster"
+  source = "/Users/davidkim/infrastructure/test/modules/puppetmaster_cluster"
 
   role = "puppet"
   subrole = "master"
-  # image = "${var.images["puppetmaster"]}"
-  # TODO replace this once the puppetmaster image is up
-  image = "${var.images["generic"]}"
+  image = "${var.images["puppetmaster"]}"
   dns_alias = "puppet"
 
   project = "${var.project}"
@@ -68,7 +65,7 @@ resource "google_compute_firewall" "puppet_master_allow_zookeeper" {
 }
 
 resource "google_dns_record_set" "puppet_master_dns" {
-  name = "aurora.${google_dns_managed_zone.region_dns.dns_name}"
+  name = "puppet.${google_dns_managed_zone.region_dns.dns_name}"
   type = "CNAME"
   ttl  = 300
 

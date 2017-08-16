@@ -26,8 +26,8 @@ variable "images" {
   type = "map"
   default = {
     # TODO need to decide on a naming scheme for images, right now it's prepended but I'd like to avoid a problem space growing. I wonder how images names are done internally?
-    generic = "pcs-centos-7"
-    puppetmaster = "pcs-puppetmaster"
+    generic = "centos-7"
+    puppetmaster = "puppetmaster"
   }
 }
 
