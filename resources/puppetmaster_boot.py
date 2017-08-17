@@ -102,6 +102,7 @@ def main():
   _set_fqdn()
   _write_facts()
   _write_puppet_config()
+  _run_script('puppetmaster_dns')
   _run_script('puppetmaster_passtiche')
   _run_script('puppetmaster_init')
 
