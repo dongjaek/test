@@ -7,7 +7,7 @@ data "template_file" "boot" {
 }
 
 resource "google_compute_instance_template" "template" {
-  name_prefix = "pcs-${var.role}-${var.subrole}-"
+  name_prefix = "${var.role}-${var.subrole}-"
   tags = ["${var.role}-${var.subrole}"]
   machine_type = "${var.instance_type}"
   region = "${var.region}"

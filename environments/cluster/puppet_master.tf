@@ -63,15 +63,3 @@ resource "google_compute_firewall" "puppet_master_allow_zookeeper" {
   source_tags = ["puppet-master"]
   target_tags = ["zookeeper-application", "zookeeper-scheduler"]
 }
-
-resource "google_dns_record_set" "puppet_master_dns" {
-  name = "puppet.${google_dns_managed_zone.region_dns.dns_name}"
-  type = "CNAME"
-  ttl  = 300
-
-  managed_zone = "${google_dns_managed_zone.region_dns.name}"
-
-  rrdatas = [
-    "${module.puppet_master.dns_name}"
-  ]
-}

@@ -17,15 +17,9 @@ variable "subnet" {
   default = "default"
 }
 
-# TODO get rid of this eventually 
-variable "team_prefix" {
-  default = "pcs"
-}
-
 variable "images" {
   type = "map"
   default = {
-    # TODO need to decide on a naming scheme for images, right now it's prepended but I'd like to avoid a problem space growing. I wonder how images names are done internally?
     generic = "centos-7"
     puppetmaster = "puppetmaster"
   }
