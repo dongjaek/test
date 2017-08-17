@@ -7,11 +7,11 @@ sleep 20 # since we nohuped passtiched we need to give it some time to come up
 
 # Setup ssh keys for git
 mkdir -p /opt/puppetlabs/server/data/puppetserver/.ssh
-puppet cp /etc/twkeys/puppetmaster/git/id_rsa /opt/puppetlabs/server/data/puppetserver/.ssh/id_rsa
-puppet cp/etc/twkeys/puppetmaster/git/id_rsa.pub /opt/puppetlabs/server/data/puppetserver/.ssh/id_rsa.pub
+cp /etc/twkeys/puppetmaster/git/id_rsa /opt/puppetlabs/server/data/puppetserver/.ssh/id_rsa
+cp /etc/twkeys/puppetmaster/git/id_rsa.pub /opt/puppetlabs/server/data/puppetserver/.ssh/id_rsa.pub
 chmod 0600 /opt/puppetlabs/server/data/puppetserver/.ssh/id_rsa
 chmod 0644 /opt/puppetlabs/server/data/puppetserver/.ssh/id_rsa.pub
-puppet ssh-keyscan github.com >> /opt/puppetlabs/server/data/puppetserver/.ssh/known_hosts
+ssh-keyscan github.com >> /opt/puppetlabs/server/data/puppetserver/.ssh/known_hosts
 chown -R puppet:puppet /opt/puppetlabs/server/data/puppetserver/.ssh
 
 # Setup certificate authority
