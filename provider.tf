@@ -22,6 +22,7 @@ variable "images" {
   default = {
     generic = "centos-7"
     puppetmaster = "puppetmaster"
+    puppetdb = "puppetdb"
   }
 }
 

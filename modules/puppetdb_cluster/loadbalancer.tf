@@ -29,21 +29,6 @@ resource "google_compute_health_check" "default" {
   }
 }
 
-resource "google_compute_firewall" "allow_healthcheck" {
-  count = "${var.frontend_lb != "" ? 1 : 0}"
-
-  name    = "${var.role}-${var.subrole}-allow-hc"
-  network = "${var.network}"
-
-  allow {
-    protocol = "tcp"
-    ports    = ["${var.lb_port}"]
-  }
-
-  source_ranges = ["130.211.0.0/22", "35.191.0.0/16"]
-  target_tags = ["${var.role}-${var.subrole}"]
-}
-
 resource "google_compute_forwarding_rule" "default" {
   count = "${var.frontend_lb != "" ? 1 : 0}"
 

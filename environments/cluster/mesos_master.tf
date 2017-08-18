@@ -17,28 +17,3 @@ module "mesos_master" {
   region_dns_zone_name = "${google_dns_managed_zone.region_dns.name}"
 }
 
-resource "google_compute_firewall" "mesos_master_allow_self" {
-  name    = "mesos-master-allow-self"
-  network = "${var.network}"
-
-  allow {
-    protocol = "tcp"
-    ports    = ["0-65535"]
-  }
-
-  source_tags = ["mesos-master"]
-  target_tags = ["mesos-master"]
-}
-
-resource "google_compute_firewall" "zookeeper_scheduler_allow_mesos_master" {
-  name    = "zookeeper-scheduler-allow-mesos-master"
-  network = "${var.network}"
-
-  allow {
-    protocol = "tcp"
-    ports    = ["2181"]
-  }
-
-  source_tags = ["mesos-master"]
-  target_tags = ["zookeeper-application", "zookeeper-scheduler"]
-}

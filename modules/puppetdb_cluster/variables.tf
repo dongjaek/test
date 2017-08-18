@@ -36,5 +36,9 @@ variable "region_dns_suffix" {
 variable "region_dns_zone_name" {
   default = ""
 }
-variable "dc" {}
-variable "tld" {}
+variable "dc" {
+  default = "guc1"
+}
+variable "tld" {
+  default = "pcs.io"
+}

@@ -43,8 +43,8 @@ resource "google_compute_instance_template" "template" {
         "puppet_role", "${coalesce("${var.role_override}", "${var.role}")}",
         "puppet_subrole", "${var.subrole}",
         "puppet_environment", "${var.environment}",
-        "startup-script", "${data.template_file.boot.template}"
-        "startup-puppetdb_passtiche", "${data.template_file.passtiche.template}"
+        "startup-script", "${data.template_file.boot.template}",
+        "startup-puppetdb_passtiche", "${data.template_file.passtiche.template}",
         "startup-puppetdb_init", "${data.template_file.init.template}"
       ),
       map(
