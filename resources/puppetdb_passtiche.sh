@@ -12,14 +12,15 @@ sleep 20  # Since we nohuped passtiched we need to give it some time to come up
 echo "Copying SSL certs to local filesystem from mount"
 mkdir -p /etc/puppetlabs/puppetdb/ssl
 mkdir -p /etc/puppetlabs/puppetdb/conf.d
-
-cp /etc/twkeys/puppetdb/ssl/ca.pem /etc/puppetlabs/puppetdb/ssl/ca.pem
-cp /etc/twkeys/puppetdb/ssl/public.pem /etc/puppetlabs/puppetdb/ssl/public.pem
-cp /etc/twkeys/puppetdb/ssl/private.pem /etc/puppetlabs/puppetdb/ssl/private.pem
-chmod 0644 /etc/puppetlabs/puppetdb/ssl/ca.pem
-chmod 0644 /etc/puppetlabs/puppetdb/ssl/public.pem
-chmod 0600 /etc/puppetlabs/puppetdb/ssl/private.pem
-chmod 0600 /etc/puppetlabs/puppetdb/conf.d/database.ini
+chown -R puppetdb:puppetdb /etc/puppetlabs/puppetdb/ssl
+chown -R puppetdb:puppetdb /etc/puppetlabs/puppetdb/conf.d
+sudo -u puppet cp /etc/twkeys/puppetdb/ssl/ca.pem /etc/puppetlabs/puppetdb/ssl/ca.pem
+sudo -u puppet cp /etc/twkeys/puppetdb/ssl/public.pem /etc/puppetlabs/puppetdb/ssl/public.pem
+sudo -u puppet cp /etc/twkeys/puppetdb/ssl/private.pem /etc/puppetlabs/puppetdb/ssl/private.pem
+sudo -u puppet chmod 0644 /etc/puppetlabs/puppetdb/ssl/ca.pem
+sudo -u puppet chmod 0644 /etc/puppetlabs/puppetdb/ssl/public.pem
+sudo -u puppet chmod 0600 /etc/puppetlabs/puppetdb/ssl/private.pem
+sudo -u puppet chmod 0600 /etc/puppetlabs/puppetdb/conf.d/database.ini
 chown -R puppetdb:puppetdb /etc/puppetlabs/puppetdb/ssl
 chown -R puppetdb:puppetdb /etc/puppetlabs/puppetdb/conf.d
 
@@ -32,5 +33,5 @@ sed -i -e 's/$PASSWORD/$SQL_PASSWORD/g' /etc/puppetlabs/puppetdb/conf.d/database
 
 echo "Killing Passtiche Daemon and unmounting secrets mount"
 kill `cat /tmp/passtiched.pid`
+cat /tmp/passtiched.pid
 rm /tmp/passtiched.pid
-umount /etc/twkeys/
