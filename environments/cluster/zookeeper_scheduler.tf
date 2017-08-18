@@ -1,5 +1,4 @@
 module "zookeeper_scheduler" {
-  # source = "../puppet_cluster"
   source = "/Users/davidkim/infrastructure/test/modules/puppet_cluster"
 
   role = "zookeeper"

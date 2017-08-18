@@ -1,11 +1,9 @@
-module "mesos_worker_general" {
+module "mesos_worker" {
   source = "/Users/davidkim/infrastructure/test/modules/puppet_cluster"
 
-  role = "mesos-worker"
-  role_override = "mesos.worker"
-  subrole = "general"
+  role = "mesos"
+  subrole = "worker"
   image = "${var.images["generic"]}"
-  dns_alias = "worker.mesos"
   instance_type = "n1-standard-4"
 
   project = "${var.project}"

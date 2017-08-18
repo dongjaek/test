@@ -52,9 +52,9 @@ resource "google_compute_instance_template" "template" {
 
 resource "google_compute_instance_group_manager" "group" {
   count = "${length(var.zones)}"
-  name = "pcs-${var.role}-${var.subrole}-${element(var.zones, count.index)}"
+  name = "${var.role}-${var.subrole}-${element(var.zones, count.index)}"
 
-  base_instance_name = "pcs-${var.role}-${var.subrole}-${element(var.zones, count.index)}"
+  base_instance_name = "${var.role}-${var.subrole}-${element(var.zones, count.index)}"
   instance_template  = "${google_compute_instance_template.template.self_link}"
   update_strategy    = "NONE"
   zone               = "${element(var.zones, count.index)}"

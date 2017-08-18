@@ -1,11 +1,11 @@
-module "puppet_master" {
-  source = "/Users/davidkim/infrastructure/test/modules/puppetmaster_cluster"
+module "puppet_db" {
+  source = "/Users/davidkim/infrastructure/test/modules/puppetdb_cluster"
 
   role = "puppet"
-  subrole = "master"
-  image = "${var.images["puppetmaster"]}"
-  dns_alias = "puppet"
-  frontend_lb = "puppet.lb"
+  subrole = "db"
+  image = "${var.images["puppetdb"]}"
+  dns_alias = "db.puppet"
+  frontend_lb = "db.puppet.lb"
   lb_port = "80"
 
   project = "${var.project}"
@@ -17,8 +17,8 @@ module "puppet_master" {
   region_dns_zone_name = "${google_dns_managed_zone.region_dns.name}"
 }
 
-resource "google_compute_firewall" "puppetmaster_allow_self" {
-  name    = "puppet-master-allow-self"
+resource "google_compute_firewall" "puppetdb_allow_self" {
+  name    = "puppet-db-allow-self"
   network = "${var.network}"
 
   allow {
@@ -26,8 +26,8 @@ resource "google_compute_firewall" "puppetmaster_allow_self" {
     ports    = ["0-65535"]
   }
 
-  source_tags = ["puppet-master"]
-  target_tags = ["puppet-master"]
+  source_tags = ["puppet-db"]
+  target_tags = ["puppet-db"]
 }
 
 # TODO A large concern is without programmatic logic, we have to include/modify/update etc this firewall rule in the code every single time a new service is created which is painful. Incredibly so. There is no turing complete language support so the ability to bootstrap is bound in tight walls that are difficult to work through. Deployment manager is leagues better in this regard, however it's incomplete in terms of DNS functionality.
@@ -35,8 +35,8 @@ resource "google_compute_firewall" "puppetmaster_allow_self" {
 # TODO not sure if we need to add firewall rules for bidirectional communication...
 
 # mesos
-resource "google_compute_firewall" "puppet_master_allow_mesos" {
-  name    = "puppet-master-allow-mesos"
+resource "google_compute_firewall" "puppet_db_allow_mesos" {
+  name    = "puppet-db-allow-mesos"
   network = "${var.network}"
 
   allow {
@@ -46,13 +46,13 @@ resource "google_compute_firewall" "puppet_master_allow_mesos" {
     ports    = ["0-65535"]
   }
 
-  source_tags = ["puppet-master"]
-  target_tags = ["mesos-application", "mesos-master"]
+  source_tags = ["puppet-db"]
+  target_tags = ["mesos-application", "mesos-db"]
 }
 
 # zookeeper
-resource "google_compute_firewall" "puppet_master_allow_zookeeper" {
-  name    = "puppet-master-allow-zookeeper"
+resource "google_compute_firewall" "puppet_db_allow_zookeeper" {
+  name    = "puppet-db-allow-zookeeper"
   network = "${var.network}"
 
   allow {
@@ -62,6 +62,6 @@ resource "google_compute_firewall" "puppet_master_allow_zookeeper" {
     ports    = ["0-65535"]
   }
 
-  source_tags = ["puppet-master"]
+  source_tags = ["puppet-db"]
   target_tags = ["zookeeper-application", "zookeeper-scheduler"]
 }
