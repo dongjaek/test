@@ -11,6 +11,8 @@ import socket
 import subprocess
 import os
 import urllib2
+import pwd
+import grp
 
 
 LOG = logging.getLogger()
@@ -138,20 +140,39 @@ def _write_facts():
     json.dump(fact_dct, f)
 
 
+AUTOSIGN = "*.{}.{}".format(tw_region(), tw_tld())
+
 PUPPET_TEMPLATE = """[main]
 certname = {certname}
 server = {server}
 environment = {environment}
 runinterval = 20m
 certificate_revocation = false
+
+[master]
+certname = {certname}
+autosign = {autosign}
 """
+
+
+def _write_autosign_conf():
+  filename = "/etc/puppetlabs/puppet/autosign.conf"
+  with open(filename, "w") as autosign:
+    autosign.write(AUTOSIGN)
+    uid = pwd.getpwnam("puppet").pw_uid
+    gid = grp.getgrnam("puppet").gr_gid
+    os.chown(filename, uid, gid)
+    os.chmod(script_filename, 0o770)
 
 
 def _write_puppet_config():
   hostname = socket.getfqdn()
+  server = 'master.puppet.%s.%s' % (tw_region(), tw_tld())
+  certname = server
   puppet_config = PUPPET_TEMPLATE.format(
-    certname='%s.%s.%s' % (puppet_role(), puppet_subrole(), hostname),
-    server='puppet.%s.%s' % (tw_region(), tw_tld()),
+    certname=certname,
+    server=server,
+    autosign = AUTOSIGN,
     environment=custom_metadata('puppet_environment')
   )
   with open('/etc/puppetlabs/puppet/puppet.conf', 'w') as f:

@@ -5,7 +5,7 @@ echo "Starting Passtiche Daemon to mount secrets"
 nohup /usr/bin/passtiched --config-file=/etc/passtiche/config.yaml > /tmp/passtiched.log 2>&1&
 echo $! 1> /tmp/passtiched.pid
 echo "Passtiched PID: $(cat /tmp/passtiched.pid)"
-sleep 20 # since we nohuped passtiched we need to give it some time to come up
+sleep 120 # since we nohuped passtiched we need to give it some time to come up
 
 # Setup ssh keys for git
 echo "Copying github secrets to local filesystem from mount"

@@ -7,7 +7,7 @@ chmod 0440 /etc/sudoers.d/91-puppetdb
 echo "Starting Passtiche Daemon to mount secrets"
 nohup /usr/bin/passtiched --config-file=/etc/passtiche/config.yaml > /tmp/passtiched.log 2>&1&  # noqa
 echo $! 1> /tmp/passtiched.pid
-sleep 20  # Since we nohuped passtiched we need to give it some time to come up
+sleep 120  # Since we nohuped passtiched we need to give it some time to come up
 
 echo "Copying SSL certs to local filesystem from mount"
 sudo -u puppet mkdir -p /etc/puppetlabs/puppetdb/ssl
