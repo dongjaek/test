@@ -1,5 +1,5 @@
 resource "google_dns_record_set" "dns" {
-  count = "${var.dns_alias != "" ? "1" : "0"}"
+  count = "${var.frontend_lb != "" ? "1" : "0"}"
 
   name = "${var.dns_alias}.${var.region_dns_suffix}"
   type = "CNAME"
@@ -8,6 +8,6 @@ resource "google_dns_record_set" "dns" {
   managed_zone = "${var.region_dns_zone_name}"
 
   rrdatas = [
-    "${google_compute_instance_template.template.metadata["dns-alias"]}.asg.gce.${var.region_dns_suffix}"
+    "${var.frontend_lb}.${var.region_dns_suffix}"
   ]
 }

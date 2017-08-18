@@ -4,8 +4,8 @@ module "puppet_master" {
   role = "puppet"
   subrole = "master"
   image = "${var.images["puppetmaster"]}"
-  dns_alias = "puppet"
-  frontend_lb = "puppet.lb"
+  dns_alias = "master.puppet"
+  frontend_lb = "lb.master.puppet"
   lb_port = "80"
 
   project = "${var.project}"

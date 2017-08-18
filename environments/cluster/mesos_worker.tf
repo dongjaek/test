@@ -14,16 +14,3 @@ module "mesos_worker" {
   region_dns_suffix = "${google_dns_managed_zone.region_dns.dns_name}"
   region_dns_zone_name = "${google_dns_managed_zone.region_dns.name}"
 }
-
-resource "google_compute_firewall" "allow_mesos_worker_self" {
-  name    = "mesos-worker-allow-self"
-  network = "${var.network}"
-
-  allow {
-    protocol = "tcp"
-    ports    = ["15000-15999", "5051"]
-  }
-
-  target_tags = ["mesos-worker-general"]
-  source_tags = ["mesos-worker-general"]
-}

@@ -5,7 +5,7 @@ module "zookeeper_scheduler" {
   subrole = "scheduler"
   image = "${var.images["generic"]}"
   dns_alias = "scheduler.zk"
-  frontend_lb = "schedulerui.zk"
+  frontend_lb = "lb.scheduler.zk"
   lb_port = "80"
 
   project = "${var.project}"

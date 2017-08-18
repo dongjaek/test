@@ -6,7 +6,7 @@ module "zookeeper_application" {
   subrole = "application"
   image = "${var.images["generic"]}"
   dns_alias = "application.zk"
-  frontend_lb = "applicationui.zk"
+  frontend_lb = "lb.application.zk"
   lb_port = "80"
 
   project = "${var.project}"

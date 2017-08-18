@@ -5,7 +5,7 @@ module "puppet_db" {
   subrole = "db"
   image = "${var.images["puppetdb"]}"
   dns_alias = "db.puppet"
-  frontend_lb = "db.puppet.lb"
+  frontend_lb = "lb.db.puppet"
   lb_port = "80"
 
   project = "${var.project}"

@@ -5,7 +5,7 @@ module "mesos_master" {
   subrole = "master"
   image = "${var.images["generic"]}"
   dns_alias = "master.mesos"
-  frontend_lb = "master.mesos.lb"
+  frontend_lb = "lb.master.mesos"
   lb_port = "80"
 
   project = "${var.project}"
