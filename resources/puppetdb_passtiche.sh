@@ -10,8 +10,8 @@ echo $! 1> /tmp/passtiched.pid
 sleep 20  # Since we nohuped passtiched we need to give it some time to come up
 
 echo "Copying SSL certs to local filesystem from mount"
-mkdir -p /etc/puppetlabs/puppetdb/ssl
-mkdir -p /etc/puppetlabs/puppetdb/conf.d
+sudo -u puppet mkdir -p /etc/puppetlabs/puppetdb/ssl
+sudo -u puppet mkdir -p /etc/puppetlabs/puppetdb/conf.d
 chown -R puppetdb:puppetdb /etc/puppetlabs/puppetdb/ssl
 chown -R puppetdb:puppetdb /etc/puppetlabs/puppetdb/conf.d
 sudo -u puppet cp /etc/twkeys/puppetdb/ssl/ca.pem /etc/puppetlabs/puppetdb/ssl/ca.pem

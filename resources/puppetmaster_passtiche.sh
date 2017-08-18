@@ -9,7 +9,7 @@ sleep 20 # since we nohuped passtiched we need to give it some time to come up
 
 # Setup ssh keys for git
 echo "Copying github secrets to local filesystem from mount"
-mkdir -p /opt/puppetlabs/server/data/puppetserver/.ssh
+sudo -u puppet mkdir -p /opt/puppetlabs/server/data/puppetserver/.ssh
 chown -R puppet:puppet /opt/puppetlabs/server/data/puppetserver/.ssh
 sudo -u puppet cp /etc/twkeys/puppetmaster/git/id_rsa /opt/puppetlabs/server/data/puppetserver/.ssh/id_rsa
 sudo -u puppet cp /etc/twkeys/puppetmaster/git/id_rsa.pub /opt/puppetlabs/server/data/puppetserver/.ssh/id_rsa.pub
@@ -21,7 +21,7 @@ chown -R puppet:puppet /opt/puppetlabs/server/data/puppetserver/.ssh
 # Setup certificate authority
 echo "Copying CA secrets to local filesystem from mount"
 rm -rf /etc/puppetlabs/puppet/ssl
-mkdir -p /etc/puppetlabs/puppet/ssl/ca
+sudo -u puppet mkdir -p /etc/puppetlabs/puppet/ssl/ca
 sudo -u puppet chown -R puppet:puppet /etc/puppetlabs/puppet/ssl
 sudo -u puppet touch /etc/puppetlabs/puppet/ssl/ca/inventory.txt
 sudo -u puppet cp /etc/twkeys/puppetmaster/ca/* /etc/puppetlabs/puppet/ssl/ca/
