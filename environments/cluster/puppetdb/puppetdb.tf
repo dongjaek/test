@@ -1,12 +1,13 @@
-module "mesos_master" {
-  source = "/Users/davidkim/infrastructure/test/modules/puppet_cluster"
+module "puppetdb" {
+  source = "/Users/davidkim/infrastructure/test/modules/puppetdb"
 
-  role = "mesos"
-  subrole = "master"
-  image = "${var.images["generic"]}"
-  dns_alias = "master.mesos"
-  frontend_lb = "lb.master.mesos"
-  lb_port = "80"
+  role = "puppetdb"
+  subrole = "base"
+  image = "${var.images["puppetdb"]}"
+  dns_alias = "puppetdb"
+  frontend_lb = "lb.puppetdb"
+
+  instance_type = "n1-standard-8"
 
   project = "${var.project}"
   zones = "${var.zones}"
@@ -16,4 +17,3 @@ module "mesos_master" {
   region_dns_suffix = "${google_dns_managed_zone.region_dns.dns_name}"
   region_dns_zone_name = "${google_dns_managed_zone.region_dns.name}"
 }
-

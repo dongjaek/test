@@ -8,6 +8,14 @@ variable "zones" {
   ]
 }
 
+variable "lb_ports" {
+  default = "1-65535"
+}
+
+variable "healthcheck_port" {
+  default = "80"
+}
+
 # TODO this is decided once XPN is properly configured, for now it doesn't matter
 variable "network" {
   default = "default"
@@ -63,9 +71,12 @@ variable "project" {
 }
 
 provider "google" {
+  # TODO remove this and have a proper delivery mechanism for secrets (passtiche mount /etc/twkeys expectaitons?)
   credentials = "${file("~/workspace/ops-sec/files/pcs/gcp/image-builder/pcs-image-builder.json")}"
   project     = "${var.project}"
+  # project = "core-infrastructure-173322"
   region      = "${var.region}"
+  # region = "us-central1"
 }
 
 provider "aws" {

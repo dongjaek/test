@@ -1,12 +1,13 @@
-module "puppet_db" {
-  source = "/Users/davidkim/infrastructure/test/modules/puppetdb_cluster"
+module "puppetmaster" {
+  source = "/Users/davidkim/infrastructure/test/modules/puppetmaster"
 
-  role = "puppet"
-  subrole = "db"
-  image = "${var.images["puppetdb"]}"
-  dns_alias = "db.puppet"
-  frontend_lb = "lb.db.puppet"
-  lb_port = "80"
+  role = "${var.role}"
+  subrole = "${var.subrole}"
+  image = "${var.image}"
+  dns_alias = "${var.dns_alias}"
+  frontend_lb = "${var.frontend_lb}"
+
+  instance_type = "n1-standard-8"
 
   project = "${var.project}"
   zones = "${var.zones}"

@@ -38,8 +38,8 @@ variable "region_dns_zone_name" {
 }
 # TODO not picked up, why not? set manually here, why?
 variable "dc" {
-  default = "guc1"
+  default = ""
 }
 variable "tld" {
-  default = "pcs.io"
+  default = ""
 }

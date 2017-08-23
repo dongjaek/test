@@ -8,6 +8,14 @@ variable "zones" {
   ]
 }
 
+variable "lb_ports" {
+  default = "1-65535"
+}
+
+variable "healthcheck_port" {
+  default = "80"
+}
+
 # TODO this is decided once XPN is properly configured, for now it doesn't matter
 variable "network" {
   default = "default"

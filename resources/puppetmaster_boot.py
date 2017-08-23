@@ -104,6 +104,7 @@ def main():
   _set_fqdn()
   _write_facts()
   _write_puppet_config()
+  _write_autosign_conf()
   _run_script('puppetmaster_dns')
   _run_script('puppetmaster_passtiche')
   _run_script('puppetmaster_init')
@@ -151,12 +152,13 @@ certificate_revocation = false
 
 [master]
 certname = {certname}
-autosign = {autosign}
+autosign = /etc/puppetlabs/puppet/autosign.conf
 """
 
 
 def _write_autosign_conf():
   filename = "/etc/puppetlabs/puppet/autosign.conf"
+  LOG.info('Writting autosign configuration: {}'.format(filename))
   with open(filename, "w") as autosign:
     autosign.write(AUTOSIGN)
     uid = pwd.getpwnam("puppet").pw_uid
@@ -167,12 +169,11 @@ def _write_autosign_conf():
 
 def _write_puppet_config():
   hostname = socket.getfqdn()
-  server = 'master.puppet.%s.%s' % (tw_region(), tw_tld())
+  server = 'puppet.%s.%s' % (tw_region(), tw_tld())
   certname = server
   puppet_config = PUPPET_TEMPLATE.format(
     certname=certname,
     server=server,
-    autosign = AUTOSIGN,
     environment=custom_metadata('puppet_environment')
   )
   with open('/etc/puppetlabs/puppet/puppet.conf', 'w') as f:
